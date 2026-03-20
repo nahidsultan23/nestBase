@@ -8,7 +8,7 @@ export const envVariables = {
     nodeEnv: process.env.NODE_ENV,
   },
   server: {
-    port: process.env.PORT,
+    port: process.env.PORT ?? '0',
   },
   application: {
     appName: process.env.APP_NAME,
