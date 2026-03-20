@@ -6,6 +6,6 @@
 export interface ImethodCommonResponse {
   statusCode: number;
   message: string;
-  data?: Record<string, string>;
+  data?: Record<string, any>;
   errors?: Record<string, string[]>;
 }
