@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { envVariables } from './config';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -18,26 +17,83 @@ describe('AppController', () => {
   });
 
   describe('getHello', () => {
-    it('should return success response with standardized format', () => {
-      const result = appController.getHello();
-      expect(result.status).toBe('success');
-      expect(result.statusCode).toBe(200);
-      expect(result.message).toContain('Hello World');
-      expect(result.data).not.toBeNull();
-      expect(result.errors).toBeNull();
-      expect(result.meta).toHaveProperty('timestamp');
+    it('should call appService.getHello', () => {
+      const getHelloSpy = jest.spyOn(appService, 'getHello');
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+      };
+
+      appController.getHello(mockRes as any);
+
+      expect(getHelloSpy).toHaveBeenCalled();
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.json).toHaveBeenCalled();
+    });
+
+    it('should return response with 200 status code', () => {
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+      };
+
+      appController.getHello(mockRes as any);
+
+      expect(mockRes.status).toHaveBeenCalledWith(200);
     });
   });
 
   describe('getStatus', () => {
-    it('should return success response with server status', () => {
-      const result = appController.getStatus();
-      expect(result.status).toBe('success');
-      expect(result.statusCode).toBe(200);
-      expect(result.message).toBe('Server is running');
-      expect(result.data).not.toBeNull();
-      expect(result.errors).toBeNull();
-      expect(result.meta).toHaveProperty('timestamp');
+    it('should call appService.getStatus', () => {
+      const getStatusSpy = jest.spyOn(appService, 'getStatus');
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+      };
+
+      appController.getStatus(mockRes as any);
+
+      expect(getStatusSpy).toHaveBeenCalled();
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.json).toHaveBeenCalled();
+    });
+
+    it('should return response with 200 status code', () => {
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+      };
+
+      appController.getStatus(mockRes as any);
+
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+    });
+  });
+
+  describe('getErrorSample', () => {
+    it('should call appService.getErrorSample', () => {
+      const getErrorSampleSpy = jest.spyOn(appService, 'getErrorSample');
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+      };
+
+      appController.getErrorSample(mockRes as any);
+
+      expect(getErrorSampleSpy).toHaveBeenCalled();
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalled();
+    });
+
+    it('should return response with 400 status code', () => {
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockReturnThis(),
+      };
+
+      appController.getErrorSample(mockRes as any);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
     });
   });
 });

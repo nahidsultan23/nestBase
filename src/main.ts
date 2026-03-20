@@ -4,6 +4,7 @@ import { envVariables } from './config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const port = parseInt(envVariables.server.port || '0', 10);
   await app.listen(port);
   console.log(

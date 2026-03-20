@@ -1,22 +1,51 @@
-import { Injectable } from '@nestjs/common';
-import { envVariables, createResponse } from './config';
-import type { ApiResponse } from './config.interface';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { envVariables } from './config';
+import { ImethodCommonResponse } from './common/interfaces/common.interface';
 
 @Injectable()
 export class AppService {
-  getHello(): ApiResponse {
-    const message = `Hello World! Running on ${envVariables.application.appName} v${envVariables.application.appVersion}`;
-    return createResponse(200, message, {
-      appName: envVariables.application.appName,
-      appVersion: envVariables.application.appVersion,
-    });
+  getHello(): ImethodCommonResponse {
+    const res = {
+      statusCode: HttpStatus.OK,
+      message: `Hello World! Server is running on ${envVariables.application.appName} v${envVariables.application.appVersion}`,
+    };
+
+    return res;
   }
 
-  getStatus(): ApiResponse {
-    return createResponse(200, 'Server is running', {
-      environment: envVariables.environment.nodeEnv,
-      appName: envVariables.application.appName,
-      appVersion: envVariables.application.appVersion,
-    });
+  getStatus(): ImethodCommonResponse {
+    const res = {
+      statusCode: HttpStatus.OK,
+      message: 'Server is running',
+      data: {
+        environment: envVariables.environment.nodeEnv
+          ? envVariables.environment.nodeEnv
+          : 'unknown',
+        appName: envVariables.application.appName
+          ? envVariables.application.appName
+          : 'unknown',
+        appVersion: envVariables.application.appVersion
+          ? envVariables.application.appVersion
+          : 'unknown',
+      },
+    };
+
+    return res;
+  }
+
+  getErrorSample(): ImethodCommonResponse {
+    const res = {
+      statusCode: HttpStatus.BAD_REQUEST,
+      message: 'Validation failed',
+      errors: {
+        email: ['Email is required', 'Email format is invalid'],
+        password: [
+          'Password is required',
+          'Password must be at least 8 characters',
+        ],
+      },
+    };
+
+    return res;
   }
 }
