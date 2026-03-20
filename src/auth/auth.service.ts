@@ -4,14 +4,14 @@ import { OwnerRegistrationDto } from './auth.dto';
 
 @Injectable()
 export class AuthService {
-  ownerRegistration(
-    ownerRegistrationDto: OwnerRegistrationDto,
-  ): ImethodCommonResponse {
+  async ownerRegistration(
+    ownerRegistrationObj: OwnerRegistrationDto,
+  ): Promise<ImethodCommonResponse> {
     const res = {
       statusCode: HttpStatus.CREATED,
       message: 'Owner registration successful',
       data: {
-        email: ownerRegistrationDto.email,
+        email: ownerRegistrationObj.email,
         registrationId: 'dummy-registration-id-12345',
         createdAt: new Date().toISOString(),
       },

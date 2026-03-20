@@ -9,11 +9,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('owner/registration')
-  ownerRegistration(
-    @Body(ValidationPipe) ownerRegistrationDto: OwnerRegistrationDto,
+  async ownerRegistration(
+    @Body(ValidationPipe) ownerRegistrationObj: OwnerRegistrationDto,
     @Res() res: Response,
   ) {
-    const result = this.authService.ownerRegistration(ownerRegistrationDto);
+    const result =
+      await this.authService.ownerRegistration(ownerRegistrationObj);
     return res.status(result.statusCode).json(createResponse(result));
   }
 }
