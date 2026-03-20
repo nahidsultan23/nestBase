@@ -2,11 +2,11 @@
  * Standard API Response Interface
  * All API responses must follow this structure
  */
-export interface IApiResponse {
+export interface IApiResponse<T = Record<string, any>> {
   status: 'success' | 'error';
   statusCode: number;
   message: string;
-  data: Record<string, any>;
+  data: T | null;
   errors: Record<string, string[]> | null;
   meta: {
     timestamp: string;
@@ -16,9 +16,9 @@ export interface IApiResponse {
 /**
  * Parameters for creating a standardized API response
  */
-export interface ICreateResponseParams {
+export interface ICreateResponseParams<T = Record<string, any>> {
   statusCode: number;
   message: string;
-  data?: Record<string, any>;
+  data?: T;
   errors?: Record<string, string[]> | null;
 }
