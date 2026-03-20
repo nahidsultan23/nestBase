@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TestDatabaseModule } from './databases/test-database.module';
+import { AuthModule } from './auth/auth.module';
 
 /**
  * Test App Module
@@ -9,7 +10,7 @@ import { TestDatabaseModule } from './databases/test-database.module';
  * Should only be used for e2e tests
  */
 @Module({
-  imports: [TestDatabaseModule],
+  imports: [TestDatabaseModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
