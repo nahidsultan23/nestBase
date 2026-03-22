@@ -11,10 +11,9 @@ async function bootstrap() {
 
   // Security: mongo-sanitize must be applied before other middleware to prevent NoSQL injection
   app.use((req: Request, res: Response, next: NextFunction) => {
-    // Sanitize request body, params, and query
-    req.body = sanitize(req.body);
-    req.params = sanitize(req.params);
-    req.query = sanitize(req.query);
+    if (req.body && typeof req.body === 'object') {
+      req.body = sanitize(req.body);
+    }
     next();
   });
 
