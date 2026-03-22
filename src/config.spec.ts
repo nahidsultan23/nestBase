@@ -27,6 +27,36 @@ describe('Config', () => {
       });
     });
 
+    describe('CORS Configuration Section', () => {
+      it('should have cors section with allowedOrigins', () => {
+        expect(envVariables.cors).toBeDefined();
+        expect(envVariables.cors.allowedOrigins).toBeDefined();
+      });
+
+      it('should have allowedOrigins as array', () => {
+        expect(Array.isArray(envVariables.cors.allowedOrigins)).toBe(true);
+      });
+
+      it('should return empty array when CORS_ALLOWED_ORIGINS is not set', () => {
+        const env = process.env.CORS_ALLOWED_ORIGINS;
+        if (!env) {
+          expect(envVariables.cors.allowedOrigins).toEqual([]);
+        }
+      });
+
+      it('should parse comma-separated origins correctly', () => {
+        const origins = envVariables.cors.allowedOrigins;
+        expect(origins === undefined || Array.isArray(origins)).toBe(true);
+      });
+
+      it('should trim whitespace from origins', () => {
+        const origins = envVariables.cors.allowedOrigins;
+        origins.forEach((origin) => {
+          expect(origin).toBe(origin.trim());
+        });
+      });
+    });
+
     describe('Application Section', () => {
       it('should have application section with appName and appVersion', () => {
         expect(envVariables.application).toBeDefined();

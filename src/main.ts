@@ -1,5 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
+import sanitize from 'mongo-sanitize';
+import type { Request, Response, NextFunction } from 'express';
 import { AppModule } from './app.module';
 import { envVariables } from './config';
 import { globalPipeResponse } from './common/filters/response.filter';
@@ -7,8 +9,28 @@ import { globalPipeResponse } from './common/filters/response.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Security: mongo-sanitize must be applied before other middleware to prevent NoSQL injection
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    // Sanitize request body, params, and query
+    req.body = sanitize(req.body);
+    req.params = sanitize(req.params);
+    req.query = sanitize(req.query);
+    next();
+  });
+
   // Security: Use helmet to set various HTTP headers
   app.use(helmet());
+
+  // Security: Configure CORS with allowed origins from environment
+  const allowedOrigins = envVariables.cors.allowedOrigins;
+  if (allowedOrigins.length > 0) {
+    app.enableCors({
+      origin: allowedOrigins,
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    });
+  }
 
   app.useGlobalPipes(globalPipeResponse);
 
