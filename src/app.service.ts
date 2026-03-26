@@ -18,15 +18,9 @@ export class AppService {
       statusCode: HttpStatus.OK,
       message: 'Server is running',
       data: {
-        environment: envVariables.environment.nodeEnv
-          ? envVariables.environment.nodeEnv
-          : 'unknown',
-        appName: envVariables.application.appName
-          ? envVariables.application.appName
-          : 'unknown',
-        appVersion: envVariables.application.appVersion
-          ? envVariables.application.appVersion
-          : 'unknown',
+        environment: envVariables.environment.nodeEnv,
+        appName: envVariables.application.appName,
+        appVersion: envVariables.application.appVersion,
       },
     };
 

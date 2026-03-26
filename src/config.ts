@@ -4,22 +4,32 @@ dotenv.config();
 
 // Environment variables from .env file
 export const envVariables = {
+  product: {
+    companyName: process.env.COMPANY_NAME || '',
+  },
   environment: {
-    nodeEnv: process.env.NODE_ENV,
+    nodeEnv: process.env.NODE_ENV || '',
   },
   server: {
-    port: process.env.PORT,
+    port: process.env.PORT || '0',
+  },
+  cors: {
+    allowedOrigins: process.env.CORS_ALLOWED_ORIGINS
+      ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) =>
+          origin.trim(),
+        )
+      : [],
   },
   application: {
-    appName: process.env.APP_NAME,
-    appVersion: process.env.APP_VERSION,
+    appName: process.env.APP_NAME || '',
+    appVersion: process.env.APP_VERSION || '',
   },
   mongoDbConfiguration: {
-    mongoDbDatabase: process.env.MONGODB_DATABASE,
-    mongoDbUser: process.env.MONGODB_USER,
-    mongoDbPassword: process.env.MONGODB_PASSWORD,
-    mongoDbHost: process.env.MONGODB_HOST,
-    mongoDbCluster: process.env.MONGODB_CLUSTER,
+    mongoDbDatabase: process.env.MONGODB_DATABASE || '',
+    mongoDbUser: process.env.MONGODB_USER || '',
+    mongoDbPassword: process.env.MONGODB_PASSWORD || '',
+    mongoDbHost: process.env.MONGODB_HOST || '',
+    mongoDbCluster: process.env.MONGODB_CLUSTER || '',
   },
 };
 
