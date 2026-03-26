@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { AppTestModule } from '../../src/app.test.module';
+import { AppTestModule } from '../../src/app.module-test';
 import { globalPipeResponse } from '../../src/common/filters/response.filter';
 
 describe('AuthController (e2e)', () => {

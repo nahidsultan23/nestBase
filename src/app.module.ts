@@ -15,8 +15,8 @@ import { AuthModule } from './auth/auth.module';
         limit: 60, // Allow 60 requests per minute per IP
       },
     ]),
-    AuthModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,16 +1,36 @@
 import { envVariables, mongoDbUri } from './config';
 
 describe('Config', () => {
-  describe('envVariables', () => {
+  describe('envVariables - Required Values Validation', () => {
+    describe('Product Section', () => {
+      it('should have product section with companyName', () => {
+        expect(envVariables.product).toBeDefined();
+        expect(envVariables.product.companyName).toBeDefined();
+      });
+
+      it('should have companyName from environment variable (not empty)', () => {
+        expect(envVariables.product.companyName).not.toBe('');
+        expect(envVariables.product.companyName.length).toBeGreaterThan(0);
+      });
+
+      it('should have companyName as string', () => {
+        expect(typeof envVariables.product.companyName).toBe('string');
+      });
+    });
+
     describe('Environment Section', () => {
       it('should have environment section with nodeEnv', () => {
         expect(envVariables.environment).toBeDefined();
         expect(envVariables.environment.nodeEnv).toBeDefined();
       });
 
-      it('should have nodeEnv as string or undefined', () => {
-        const nodeEnv = envVariables.environment.nodeEnv;
-        expect(nodeEnv === undefined || typeof nodeEnv === 'string').toBe(true);
+      it('should have nodeEnv from environment variable (not empty)', () => {
+        expect(envVariables.environment.nodeEnv).not.toBe('');
+        expect(envVariables.environment.nodeEnv.length).toBeGreaterThan(0);
+      });
+
+      it('should have nodeEnv as string', () => {
+        expect(typeof envVariables.environment.nodeEnv).toBe('string');
       });
     });
 
@@ -18,12 +38,22 @@ describe('Config', () => {
       it('should have server section with port', () => {
         expect(envVariables.server).toBeDefined();
         expect(envVariables.server.port).toBeDefined();
+      });
+
+      it('should have port as string', () => {
         expect(typeof envVariables.server.port).toBe('string');
       });
 
-      it('should have port as string with default value "0"', () => {
-        expect(envVariables.server.port).toBeDefined();
-        expect(typeof envVariables.server.port).toBe('string');
+      it('should have port from environment variable (not empty and not "0")', () => {
+        expect(envVariables.server.port).not.toBe('');
+        expect(envVariables.server.port).not.toBe('0');
+        expect(envVariables.server.port.length).toBeGreaterThan(0);
+      });
+
+      it('should have port as valid number string', () => {
+        const port = parseInt(envVariables.server.port, 10);
+        expect(port).toBeGreaterThan(0);
+        expect(port).toBeLessThanOrEqual(65535);
       });
     });
 
@@ -35,18 +65,6 @@ describe('Config', () => {
 
       it('should have allowedOrigins as array', () => {
         expect(Array.isArray(envVariables.cors.allowedOrigins)).toBe(true);
-      });
-
-      it('should return empty array when CORS_ALLOWED_ORIGINS is not set', () => {
-        const env = process.env.CORS_ALLOWED_ORIGINS;
-        if (!env) {
-          expect(envVariables.cors.allowedOrigins).toEqual([]);
-        }
-      });
-
-      it('should parse comma-separated origins correctly', () => {
-        const origins = envVariables.cors.allowedOrigins;
-        expect(origins === undefined || Array.isArray(origins)).toBe(true);
       });
 
       it('should trim whitespace from origins', () => {
@@ -64,16 +82,22 @@ describe('Config', () => {
         expect(envVariables.application.appVersion).toBeDefined();
       });
 
-      it('should have appName as string or undefined', () => {
-        const appName = envVariables.application.appName;
-        expect(appName === undefined || typeof appName === 'string').toBe(true);
+      it('should have appName from environment variable (not empty)', () => {
+        expect(envVariables.application.appName).not.toBe('');
+        expect(envVariables.application.appName.length).toBeGreaterThan(0);
       });
 
-      it('should have appVersion as string or undefined', () => {
-        const appVersion = envVariables.application.appVersion;
-        expect(appVersion === undefined || typeof appVersion === 'string').toBe(
-          true,
-        );
+      it('should have appName as string', () => {
+        expect(typeof envVariables.application.appName).toBe('string');
+      });
+
+      it('should have appVersion from environment variable (not empty)', () => {
+        expect(envVariables.application.appVersion).not.toBe('');
+        expect(envVariables.application.appVersion.length).toBeGreaterThan(0);
+      });
+
+      it('should have appVersion as string', () => {
+        expect(typeof envVariables.application.appVersion).toBe('string');
       });
     });
 
@@ -87,31 +111,69 @@ describe('Config', () => {
         expect(envVariables.mongoDbConfiguration.mongoDbCluster).toBeDefined();
       });
 
-      it('should have mongoDbDatabase as string or undefined', () => {
-        const db = envVariables.mongoDbConfiguration.mongoDbDatabase;
-        expect(db === undefined || typeof db === 'string').toBe(true);
+      it('should have mongoDbDatabase from environment variable (not empty)', () => {
+        expect(envVariables.mongoDbConfiguration.mongoDbDatabase).not.toBe('');
+        expect(
+          envVariables.mongoDbConfiguration.mongoDbDatabase.length,
+        ).toBeGreaterThan(0);
       });
 
-      it('should have mongoDbUser as string or undefined', () => {
-        const user = envVariables.mongoDbConfiguration.mongoDbUser;
-        expect(user === undefined || typeof user === 'string').toBe(true);
-      });
-
-      it('should have mongoDbPassword as string or undefined', () => {
-        const password = envVariables.mongoDbConfiguration.mongoDbPassword;
-        expect(password === undefined || typeof password === 'string').toBe(
-          true,
+      it('should have mongoDbDatabase as string', () => {
+        expect(typeof envVariables.mongoDbConfiguration.mongoDbDatabase).toBe(
+          'string',
         );
       });
 
-      it('should have mongoDbHost as string or undefined', () => {
-        const host = envVariables.mongoDbConfiguration.mongoDbHost;
-        expect(host === undefined || typeof host === 'string').toBe(true);
+      it('should have mongoDbUser from environment variable (not empty)', () => {
+        expect(envVariables.mongoDbConfiguration.mongoDbUser).not.toBe('');
+        expect(
+          envVariables.mongoDbConfiguration.mongoDbUser.length,
+        ).toBeGreaterThan(0);
       });
 
-      it('should have mongoDbCluster as string or undefined', () => {
-        const cluster = envVariables.mongoDbConfiguration.mongoDbCluster;
-        expect(cluster === undefined || typeof cluster === 'string').toBe(true);
+      it('should have mongoDbUser as string', () => {
+        expect(typeof envVariables.mongoDbConfiguration.mongoDbUser).toBe(
+          'string',
+        );
+      });
+
+      it('should have mongoDbPassword from environment variable (not empty)', () => {
+        expect(envVariables.mongoDbConfiguration.mongoDbPassword).not.toBe('');
+        expect(
+          envVariables.mongoDbConfiguration.mongoDbPassword.length,
+        ).toBeGreaterThan(0);
+      });
+
+      it('should have mongoDbPassword as string', () => {
+        expect(typeof envVariables.mongoDbConfiguration.mongoDbPassword).toBe(
+          'string',
+        );
+      });
+
+      it('should have mongoDbHost from environment variable (not empty)', () => {
+        expect(envVariables.mongoDbConfiguration.mongoDbHost).not.toBe('');
+        expect(
+          envVariables.mongoDbConfiguration.mongoDbHost.length,
+        ).toBeGreaterThan(0);
+      });
+
+      it('should have mongoDbHost as string', () => {
+        expect(typeof envVariables.mongoDbConfiguration.mongoDbHost).toBe(
+          'string',
+        );
+      });
+
+      it('should have mongoDbCluster from environment variable (not empty)', () => {
+        expect(envVariables.mongoDbConfiguration.mongoDbCluster).not.toBe('');
+        expect(
+          envVariables.mongoDbConfiguration.mongoDbCluster.length,
+        ).toBeGreaterThan(0);
+      });
+
+      it('should have mongoDbCluster as string', () => {
+        expect(typeof envVariables.mongoDbConfiguration.mongoDbCluster).toBe(
+          'string',
+        );
       });
     });
   });

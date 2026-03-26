@@ -4,8 +4,11 @@ dotenv.config();
 
 // Environment variables from .env file
 export const envVariables = {
+  product: {
+    companyName: process.env.COMPANY_NAME || '',
+  },
   environment: {
-    nodeEnv: process.env.NODE_ENV || 'unknown',
+    nodeEnv: process.env.NODE_ENV || '',
   },
   server: {
     port: process.env.PORT || '0',
@@ -18,8 +21,8 @@ export const envVariables = {
       : [],
   },
   application: {
-    appName: process.env.APP_NAME || 'unknown',
-    appVersion: process.env.APP_VERSION || 'unknown',
+    appName: process.env.APP_NAME || '',
+    appVersion: process.env.APP_VERSION || '',
   },
   mongoDbConfiguration: {
     mongoDbDatabase: process.env.MONGODB_DATABASE || '',
